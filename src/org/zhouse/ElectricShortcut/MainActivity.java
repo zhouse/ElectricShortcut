@@ -32,12 +32,12 @@ public class MainActivity extends Activity {
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+    	
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         
         custom_font= Typeface.createFromAsset(getAssets(), "GOTHICBI.TTF");
    
-        
         listaSklepow= new ArrayList<ObjectShop>();
  
         list = (ListView) findViewById(R.id.listView1);
@@ -52,10 +52,13 @@ public class MainActivity extends Activity {
         
     }
     
+    
   //**********
   //ASYNC TASK
   //**********	
   	
+    
+    //******************
   	class JSONAsyncTask extends AsyncTask<String, Void, Boolean> {
 
 

@@ -33,8 +33,7 @@ public class RowAdapter extends ArrayAdapter<ObjectShop>{
         View row = convertView;
         RowHolder holder = null;
  
-        if(row == null)
-        {
+        if(row == null){
             LayoutInflater inflater = ((MainActivity)context).getLayoutInflater();
             row = inflater.inflate(layoutResourceId, parent, false);
  
@@ -44,35 +43,20 @@ public class RowAdapter extends ArrayAdapter<ObjectShop>{
             holder.godziny = (TextView)row.findViewById(R.id.godziny);
             holder.nazwaSklepu.setTypeface(MainActivity.custom_font);
             row.setTag(holder);
-        }
-        else
-        {
+        } else {
             holder = (RowHolder)row.getTag();
         }
  
-        LocationManager lm = (LocationManager)context.getSystemService(Context.LOCATION_SERVICE); 
-        Location location = lm.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
-        
-        
-        if (location==null){
-        	Log.d(TAG,"location==null");
-        }
-        
-        
-        double longitude = location.getLongitude();
-        double latitude = location.getLatitude();
-        
+           
         ObjectShop object = data.get(position);
         holder.nazwaSklepu.setText(object.getName());
-        holder.odleglosc.setText(String.valueOf(object.getOdleglosc(latitude, longitude)));
+        
         holder.godziny.setText(String.valueOf(object.getOpen())+"-"+String.valueOf(object.getClose()));
      
         return row;
     }
  
-    static class RowHolder
-    {
-     
-        TextView nazwaSklepu, odleglosc, godziny;
+    static class RowHolder{
+             TextView nazwaSklepu, odleglosc, godziny;
     }
 }

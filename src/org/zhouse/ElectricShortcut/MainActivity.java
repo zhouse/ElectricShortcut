@@ -32,12 +32,13 @@ public class MainActivity extends Activity {
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+    	
+    	//glowna funkcja
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         
         custom_font= Typeface.createFromAsset(getAssets(), "GOTHICBI.TTF");
    
-        
         listaSklepow= new ArrayList<ObjectShop>();
  
         list = (ListView) findViewById(R.id.listView1);

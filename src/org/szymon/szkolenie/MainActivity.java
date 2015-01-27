@@ -32,7 +32,7 @@ public class MainActivity extends Activity {
     private ArrayAdapter<String> adapter2 ;  
     RowAdapter adapter;
     public static Typeface custom_font;
-    
+   
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,7 +122,7 @@ public class MainActivity extends Activity {
     
     
     
-    
+    /** @author Szymon */
     
     
     

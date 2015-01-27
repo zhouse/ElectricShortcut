@@ -17,8 +17,11 @@ import android.app.Activity;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
  
@@ -35,6 +38,15 @@ public class MainActivity extends Activity {
     	
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        
+        LinearLayout deviceLayout=(LinearLayout) findViewById(R.id.deviceLayout);
+        LayoutParams deviceLayoutParams=deviceLayout.getLayoutParams();
+        
+        DisplayMetrics metrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(metrics);
+           
+        deviceLayoutParams.height=metrics.heightPixels;
+        deviceLayoutParams.width= metrics.widthPixels;
         
         custom_font= Typeface.createFromAsset(getAssets(), "GOTHICBI.TTF");
    

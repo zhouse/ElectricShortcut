@@ -56,6 +56,8 @@ public class MainActivity extends Activity {
   //ASYNC TASK
   //**********	
   	
+    
+    //******************
   	class JSONAsyncTask extends AsyncTask<String, Void, Boolean> {
 
 

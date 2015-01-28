@@ -33,7 +33,7 @@ public class MainActivity extends Activity {
     public static Typeface custom_font;
    
     
-    // Tu doda³em coœ - Maciej
+    // Test ostatni
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {

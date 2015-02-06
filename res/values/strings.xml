@@ -3,5 +3,6 @@
 
     <string name="app_name">szkolenie</string>
     <string name="hello_world">Hello world!</string>
+    <string name="contentDescription">ASDF</string>
 
 </resources>

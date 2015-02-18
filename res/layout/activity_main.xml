@@ -10,16 +10,19 @@
     
 	<RelativeLayout 
 	   
-	    android:layout_width="200dp"
+	    android:layout_width="500dp"
 	    android:layout_height="match_parent"
-	    android:background="#ffffff00" >
+	    android:background="#00ffff00" >
 	
 	    <ListView
 	        android:id="@+id/listView1"
 	        android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
 	        android:layout_alignParentTop="true"
-	        android:layout_centerHorizontal="true" >
+	        android:layout_centerHorizontal="true" 
+	        android:divider="#ffffffff"
+	        android:layout_marginRight="150dp"
+	        >
 	 
 	    </ListView>
 	

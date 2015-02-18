@@ -18,7 +18,7 @@ import android.widget.ListView;
  
 public class MainActivity extends Activity {
 	final static String TAG = "MainActivity";
-	ArrayList<ObjectDevice> deviceList;
+	public static ArrayList<ObjectDevice> deviceList;
     private ListView listView1 ;    
     ZhouseDeviceListAdapter adapter;
     public static Typeface custom_font;
@@ -39,18 +39,11 @@ public class MainActivity extends Activity {
         deviceLayoutParams.height=metrics.heightPixels;
         deviceLayoutParams.width= metrics.widthPixels;
         
-        custom_font= Typeface.createFromAsset(getAssets(), "GOTHICBI.TTF");
+        custom_font= Typeface.createFromAsset(getAssets(), "GOTHIC.TTF");
    
         deviceList= new ArrayList<ObjectDevice>();
-  
-        adapter = new ZhouseDeviceListAdapter(this, R.layout.textview, deviceList);
-    
-        listView1 = (ListView)findViewById(R.id.listView1);
-        listView1.setAdapter(adapter);
-        
-        /**
-         * Creating ArrayList of devices
-         */
+
+		Log.d(TAG, "Start apki");
         ZhouseVeraServer serwer = null;
         try {
 			serwer = new ZhouseVeraServer(getBaseContext());
@@ -58,24 +51,38 @@ public class MainActivity extends Activity {
 			Log.d(TAG, "Nie udało się zainicjalizować serwera");
 			e.printStackTrace();
 		}
-       
-        ObjectAllDevices allDevices = serwer.GetDevices();
+		Log.d(TAG, "urzadzenia "+serwer.GetRooms().GetRoomsCount());       
+        ArrayList<ObjectDevice> allDevices = serwer.GetDevices().GetAll();
         
-        for (int i = 0; i < allDevices.GetDevicesCount(); i++) {	
-        	if (allDevices.GetDevice(i).GetCategory() == 2 || allDevices.GetDevice(i).GetCategory() == 3) {	
-        		deviceList.add(allDevices.GetDevice(i));
+        for (int i = 0; i < allDevices.size(); i++) {
+        	Log.d(TAG, "i: "+i);
+        	ObjectDevice dev=allDevices.get(i);
+        	if (dev.GetCategory() == 2 || dev.GetCategory() == 3) {	
+        		deviceList.add(dev);
 			}
 			
 		}
         
+        listView1 = (ListView)findViewById(R.id.listView1);
+        adapter = new ZhouseDeviceListAdapter(this, R.layout.textview, deviceList,listView1);
+    
+        listView1.setAdapter(adapter);
         
-        
+        /**
+         * Creating ArrayList of devices
+         */    
     }
     
-    
-  
-    
-    
+    public static boolean checkIfNumber(String in) {
+        
+        try {
+            Integer.parseInt(in);
+        
+        } catch (NumberFormatException ex) {
+            return false;
+        }   
+        return true;
+    }
     
     
     

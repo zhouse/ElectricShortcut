@@ -4,9 +4,10 @@ import java.util.ArrayList;
 
 import org.zhouse.libs.ListViewHelper;
 import org.zhouse.libs.ObjectDevice;
-import org.zhouse.libs.ObjectVeraScene;
-import org.zhouse.libs.ObjectVirtualDevice;
 
+
+
+import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -30,7 +31,7 @@ public class ZhouseDeviceListAdapter extends ArrayAdapter<ObjectDevice> {
 
 	Context mainContext;
     
-    public ZhouseDeviceListAdapter(Context context, int textViewResourceId, ArrayList<ObjectDevice> list) {
+    public ZhouseDeviceListAdapter(Context context, int textViewResourceId, ArrayList<ObjectDevice> list, ListView lista) {
     	super(context, textViewResourceId);
     	mainContext=context;
     	
@@ -39,8 +40,12 @@ public class ZhouseDeviceListAdapter extends ArrayAdapter<ObjectDevice> {
     	 */
     	helpersList = new ArrayList<ListViewHelper>();
     	for (int i = 0; i < list.size(); i++) {
-    		helpersList.add(new ListViewHelper(list.get(i).GetID(), list.get(i).GetCategory(), list.get(i).GetRoom(), list.get(i).GetName()));
+    		ListViewHelper myHelper= new ListViewHelper(list.get(i).GetID(), list.get(i).GetCategory(), list.get(i).GetRoom(), list.get(i).GetName());
+    		myHelper.SetVariables(list.get(i).GetVariables());
+    		helpersList.add(myHelper);
 		}
+        lista.setCacheColorHint(0);
+        lista.setOnItemClickListener(deviceClick);
     	
     }
 
@@ -109,23 +114,38 @@ public class ZhouseDeviceListAdapter extends ArrayAdapter<ObjectDevice> {
 		    String stateString="";
 		    String stateStringUnits="";
 		    String value=device_value;
+		    
 			value=value.replaceAll("\\s","");
     
 		    switch (category_number){
-				case 2:		if (value!="") {stateString=value; stateStringUnits="%";}  break;
-				case 3: 	if (value.contains("0")) stateImage=R.drawable.off_icon; else if (value.contains("1")) stateImage=R.drawable.on_icon; break;
+				case 2:
+				    device_value=helpersList.get(position).GetVariable("level");
+					if (!device_value.equals(""))
+						{
+						stateString=device_value;
+						stateStringUnits="%";
+						}  
+					break;
+				case 3:
+				    device_value=helpersList.get(position).GetVariable("status");
+					if (device_value.contains("0")) stateImage=R.drawable.off_icon; 
+						else if (device_value.contains("1")) stateImage=R.drawable.on_icon; 
+					break;
 		    	}
-		    		    
+		    
+		    Log.d(TAG,"state string "+device_value);
+		    
 		    holder.devicePositionUnits.setVisibility(View.VISIBLE);
 		    holder.devicePosition.setVisibility(View.VISIBLE);
 		    holder.deviceImagePosition.setVisibility(View.VISIBLE);
 
-		    if (stateString!="") {
+		    if (!stateString.equals("")) {
+		    	Log.d(TAG,"state string not empty");
 		    	holder.devicePosition.setText(stateString); 
 		    	holder.devicePosition.setVisibility(View.VISIBLE);
 		    	} else holder.devicePosition.setVisibility(View.GONE);
 		    
-		    if (stateStringUnits!="") {
+		    if (!stateStringUnits.equals("")) {
 		    	holder.devicePositionUnits.setText(stateStringUnits);
 		    	holder.devicePositionUnits.setVisibility(View.VISIBLE);
 		    	} else holder.devicePositionUnits.setVisibility(View.GONE);
@@ -170,25 +190,33 @@ public class ZhouseDeviceListAdapter extends ArrayAdapter<ObjectDevice> {
 //      ON CLICK ROUTINES
 //
 //*******************************      
-/*
+
     private OnItemClickListener deviceClick = new OnItemClickListener(){
 
 		public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 				long arg3) {
-			ClickDevicesRoutines clickRoutines=new ClickDevicesRoutines(mainContext);
-
 			Log.d(TAG, "clicked: "+helpersList.get(arg2).GetName()+" cat: "+helpersList.get(arg2).GetCategory());
-			
-			if (helpersList.get(arg2).GetCategory()==27){
-	        	clickRoutines.runDevice(ConnectionService.veraServer.GetVeraScenes().GetScene(helpersList.get(arg2).GetId()));				
-			} else if (ConnectionService.veraServer.GetDevices().GetDevice(helpersList.get(arg2).GetId())!=null){
-	        	clickRoutines.runDevice(ConnectionService.veraServer.GetDevices().GetDevice(helpersList.get(arg2).GetId()));
-			} else if (ConnectionService.veraServer.GetVirtualDevices().GetDevice(helpersList.get(arg2).GetId())!=null){
-	        	clickRoutines.runDevice(ConnectionService.veraServer.GetVirtualDevices().GetDevice(helpersList.get(arg2).GetId()));
-			}
 
+			Intent intent=new Intent();
+			intent.putExtra("ITEM_NAME", helpersList.get(arg2).GetName());   		
+			intent.putExtra("ITEM_DEVICEID", helpersList.get(arg2).GetId());
+			intent.putExtra("ITEM_MIOSDEVICEID", helpersList.get(arg2).GetId());
+			String value;
+
+			
+			if (helpersList.get(arg2).GetCategory()==2){
+				value=helpersList.get(arg2).GetVariable("level");
+				intent.putExtra("ITEM_VALUE", value);
+				intent.setClass(mainContext, WindowDimmer.class);
+		   		((Activity) mainContext).startActivityForResult(intent, 33);			
+			} else {
+				value=helpersList.get(arg2).GetVariable("status");
+	        	for(int i=0;i<MainActivity.deviceList.size();i++){
+	        		if(MainActivity.deviceList.get(i).GetID()==helpersList.get(arg2).GetId()) MainActivity.deviceList.get(i).ChangeVariable("status", value);
+	        	}				
+			}
 		}
     };
-*/
+
 
 }

@@ -1,8 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
 <resources>
-
-    <string name="app_name">szkolenie</string>
+    <string name="app_name">Zhouse Electric Shortcut</string>
     <string name="hello_world">Hello world!</string>
     <string name="contentDescription">ASDF</string>
-
+    <string name="window_dimmer_set_on">SET ON</string>
+    <string name="window_dimmer_set_off">SET OFF</string>
+    
 </resources>

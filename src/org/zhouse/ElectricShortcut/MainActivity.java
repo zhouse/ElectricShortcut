@@ -9,12 +9,14 @@ import org.zhouse.libs.ZhouseVeraServer;
 import android.app.Activity;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.Toast;
  
 public class MainActivity extends Activity {
 	final static String TAG = "MainActivity";
@@ -29,6 +31,7 @@ public class MainActivity extends Activity {
     	
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        
         
         LinearLayout deviceLayout=(LinearLayout) findViewById(R.id.deviceLayout);
         LayoutParams deviceLayoutParams=deviceLayout.getLayoutParams();
@@ -62,6 +65,20 @@ public class MainActivity extends Activity {
 			}
 			
 		}
+        
+    	if (deviceList.size()==0){
+    		
+    		Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                public void run() {
+                    finish();
+                }
+            }, 100);
+    		
+            Toast.makeText(getApplicationContext(), 
+                    "No electric devices found", Toast.LENGTH_LONG).show();
+
+    	}
         
         listView1 = (ListView)findViewById(R.id.listView1);
         adapter = new ZhouseDeviceListAdapter(this, R.layout.textview, deviceList,listView1);

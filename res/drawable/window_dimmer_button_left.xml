@@ -14,6 +14,12 @@
 		
 		    <solid android:color="#FFd5d6db"/>
 		    <corners android:bottomRightRadius="8dp"/>
+		    
+		     <corners
+       		 android:radius="8dp"   >
+    		 </corners>
+		    
+		    
 		</shape>
     </item>
 </selector>
